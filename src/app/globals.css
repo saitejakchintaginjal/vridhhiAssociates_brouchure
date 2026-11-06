@@ -7,6 +7,8 @@
   --color-aqua: #22c7db;
   --color-aqua-soft: #d9f6fa;
   --color-mist: #f2f9fb;
+  --color-tide-1: #7fd3e6;
+  --color-tide-2: #2b6cb0;
   --color-ink: #0b1e3d;
   --font-sans: var(--font-manrope);
   --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
@@ -29,9 +31,13 @@ body {
 }
 
 /* ---------- Text styles (landing-page-design B1) ---------- */
-@utility heading-1 { @apply text-4xl font-semibold md:text-6xl; text-wrap: balance; }
-@utility heading-2 { @apply text-3xl font-semibold md:text-5xl; text-wrap: balance; }
-@utility heading-3 { @apply text-2xl font-semibold md:text-4xl; text-wrap: balance; }
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+@utility heading-1 { @apply text-4xl font-semibold md:text-5xl lg:text-6xl; text-wrap: balance; }
+@utility heading-2 { @apply text-3xl font-semibold md:text-4xl lg:text-5xl; text-wrap: balance; }
+@utility heading-3 { @apply text-2xl font-semibold md:text-3xl lg:text-4xl; text-wrap: balance; }
 @utility heading-4 { @apply text-2xl font-semibold md:text-3xl; text-wrap: balance; }
 @utility heading-5 { @apply text-xl font-semibold md:text-2xl; text-wrap: balance; }
 @utility heading-6 { @apply text-xl font-semibold; text-wrap: balance; }
@@ -53,7 +59,7 @@ body {
 
   /* Buttons: 8px vertical, 12px horizontal */
 @utility btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 transition-[transform,opacity] duration-300 ease-brand;
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-3 py-2 transition-[transform,opacity] duration-300 ease-brand;
   &:hover { transform: translateY(-2px); }
   &:active { transform: scale(0.98); }
 }
@@ -63,7 +69,7 @@ body {
 }
 @utility btn-ghost { @apply btn button-md border border-navy/30 text-navy; }
 @utility btn-ghost-light { @apply btn button-md border border-white/40 text-white; }
-@utility section { @apply mx-auto w-full max-w-6xl px-4 py-16 md:px-6 md:py-24; }
+@utility section { @apply mx-auto w-full max-w-6xl px-4 py-16 md:px-8 md:py-24; }
 @utility eyebrow { @apply caption-3 uppercase tracking-widest text-aqua; }
 @utility card { @apply rounded-2xl border border-navy/10 bg-white p-6; }
 @utility card-dark { @apply rounded-2xl border border-white/15 bg-navy-mid p-6 text-white; }
@@ -100,7 +106,7 @@ body {
 
 /* ---------- Page transition ---------- */
 .page-in {
-  animation: page-in 700ms var(--ease-brand) 200ms both;
+  animation: page-in 700ms var(--ease-brand) 200ms backwards;
 }
 .wipe {
   position: fixed;
@@ -176,6 +182,142 @@ body {
   to { transform: translateY(-24px); }
 }
 
+/* Rain entering a slab through cracks. One cycle is 4.2s per crack. */
+.crack-drop,
+.crack-drip,
+.crack-damp,
+.crack-ripple {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  animation-duration: 4200ms;
+  animation-timing-function: var(--ease-brand);
+  animation-iteration-count: infinite;
+}
+.crack-drop { animation-name: crack-drop; }
+.crack-drip { animation-name: crack-drip; }
+.crack-damp { animation-name: crack-damp; }
+.crack-ripple { animation-name: crack-ripple; }
+
+@keyframes crack-drop {
+  0% { transform: translate(0, -96px); opacity: 0; }
+  10% { opacity: 1; }
+  32% { transform: translate(0, 0); opacity: 1; }
+  48% { transform: translate(calc(var(--dx) * 0.5), 36px) scale(0.85); opacity: 1; }
+  68% { transform: translate(var(--dx), 82px) scale(0.6); opacity: 0.9; }
+  74%, 100% { transform: translate(var(--dx), 88px) scale(0.4); opacity: 0; }
+}
+@keyframes crack-ripple {
+  0%, 28% { transform: scale(0.3); opacity: 0; }
+  32% { transform: scale(0.3); opacity: 0.9; }
+  56%, 100% { transform: scale(1.5); opacity: 0; }
+}
+@keyframes crack-damp {
+  0%, 66% { transform: scale(0.2); opacity: 0; }
+  86% { transform: scale(1); opacity: 0.7; }
+  96% { transform: scale(1.1); opacity: 0.35; }
+  100% { transform: scale(1.1); opacity: 0; }
+}
+@keyframes crack-drip {
+  0%, 80% { transform: translateY(0); opacity: 0; }
+  84% { transform: translateY(0); opacity: 1; }
+  98%, 100% { transform: translateY(46px); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .crack-drop, .crack-drip, .crack-damp, .crack-ripple { animation: none; }
+  .crack-drop { opacity: 1; transform: translate(0, 24px); }
+  .crack-damp { opacity: 0.6; }
+}
+
+/* Leak map: only the selected point animates. */
+.leak-drip,
+.leak-ripple,
+.leak-damp,
+.leak-rise {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.leak-drip { opacity: 0; }
+.leak-ripple { opacity: 0; }
+.leak-damp { opacity: 0; }
+.leak-rise { transform-origin: bottom; transform: scaleY(0.45); }
+.leak-on .leak-drip { animation: leak-drip 2400ms var(--ease-brand) infinite; }
+.leak-on .leak-ripple { animation: crack-ripple 2400ms var(--ease-brand) infinite; }
+.leak-on .leak-damp { animation: leak-damp 2400ms var(--ease-brand) infinite; }
+.leak-on .leak-rise { animation: leak-rise 3000ms var(--ease-brand) infinite alternate; }
+.leak-pulse { animation: leak-pulse 1800ms var(--ease-brand) infinite; }
+
+@keyframes leak-drip {
+  0% { transform: translateY(0); opacity: 0; }
+  15% { opacity: 1; }
+  80% { transform: translateY(var(--fall, 36px)); opacity: 1; }
+  100% { transform: translateY(calc(var(--fall, 36px) + 8px)); opacity: 0; }
+}
+@keyframes leak-damp {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(1.08); opacity: 0.2; }
+}
+@keyframes leak-rise {
+  from { transform: scaleY(0.45); }
+  to { transform: scaleY(1); }
+}
+@keyframes leak-pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .leak-on .leak-drip, .leak-on .leak-ripple, .leak-on .leak-damp, .leak-on .leak-rise, .leak-pulse { animation: none; }
+  .leak-on .leak-drip { opacity: 1; transform: translateY(12px); }
+  .leak-on .leak-damp { opacity: 0.6; }
+  .leak-on .leak-rise { transform: scaleY(1); }
+}
+
+/* Rain bouncing off a waterproofed slab. */
+.seal-drop,
+.seal-splash-l,
+.seal-splash-r,
+.seal-badge {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-duration: 4200ms;
+  animation-timing-function: var(--ease-brand);
+  animation-iteration-count: infinite;
+}
+.seal-drop { opacity: 0; animation-name: seal-drop; }
+.seal-splash-l { opacity: 0; animation-name: seal-splash-l; }
+.seal-splash-r { opacity: 0; animation-name: seal-splash-r; }
+.seal-badge { animation-name: seal-badge; }
+
+@keyframes seal-drop {
+  0% { transform: translate(0, -96px); opacity: 0; }
+  10% { opacity: 1; }
+  30% { transform: translate(0, 0) scale(1, 1); opacity: 1; }
+  36% { transform: translate(0, 2px) scale(1.7, 0.45); opacity: 1; }
+  62% { transform: translate(var(--run), 3px) scale(1.2, 0.35); opacity: 0.7; }
+  72%, 100% { transform: translate(calc(var(--run) * 1.3), 3px) scale(0.8, 0.3); opacity: 0; }
+}
+@keyframes seal-splash-l {
+  0%, 30% { transform: translate(0, 0); opacity: 0; }
+  32% { transform: translate(0, 0); opacity: 1; }
+  50% { transform: translate(-14px, -18px); opacity: 0.9; }
+  64%, 100% { transform: translate(-24px, -2px); opacity: 0; }
+}
+@keyframes seal-splash-r {
+  0%, 30% { transform: translate(0, 0); opacity: 0; }
+  32% { transform: translate(0, 0); opacity: 1; }
+  50% { transform: translate(14px, -18px); opacity: 0.9; }
+  64%, 100% { transform: translate(24px, -2px); opacity: 0; }
+}
+@keyframes seal-badge {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .seal-drop, .seal-splash-l, .seal-splash-r, .seal-badge { animation: none; }
+  .seal-drop { opacity: 1; transform: translate(0, -4px); }
+}
+
 .tilt {
   transition: transform 500ms var(--ease-brand);
   will-change: transform;
@@ -191,6 +333,23 @@ body {
   .rain { opacity: 1; }
   .ripple { opacity: 0.4; }
   .tilt, .stage { transition: none; }
+}
+.hero-heading-light {
+  max-width: 680px;
+  background: linear-gradient(to right, #000000, #666666);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.fall { animation: fall 2600ms linear infinite; opacity: 0; }
+@keyframes fall {
+  0% { transform: translateY(-12vh); opacity: 0; }
+  10% { opacity: 0.9; }
+  90% { opacity: 0.9; }
+  100% { transform: translateY(105vh); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fall { animation: none; opacity: 0.5; transform: translateY(30vh); }
 }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fade-out { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }

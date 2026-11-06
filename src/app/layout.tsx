@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
+import { RainCanvas } from "@/components/RainCanvas";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
+        <RainCanvas />
         <Nav />
         <main id="main" className="flex-1">
           {children}

@@ -2,14 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Phone } from "@phosphor-icons/react";
 import { company, nav } from "@/data/company";
 
 export function Nav() {
-  const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -18,6 +16,25 @@ export function Nav() {
     };
   }, [open]);
 
+  // Mark the menu link whose section sits on the middle line of the screen.
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const link = nav.find((n) => n.ids.includes(entry.target.id));
+          setActive(link ? link.href : null);
+        }
+      },
+      { rootMargin: "-45% 0px -50% 0px" },
+    );
+    nav.flatMap((n) => n.ids).forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+    return () => io.disconnect();
+  }, []);
+
   return (
     <>
       <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-4">
@@ -25,7 +42,7 @@ export function Nav() {
           aria-label="Primary"
           className="flex w-full items-center justify-between gap-6 rounded-2xl border border-white/20 bg-navy-deep/75 px-3 py-2 text-white backdrop-blur-md md:w-auto"
         >
-          <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
+          <Link href="/#top" className="flex items-center gap-2" onClick={() => setOpen(false)}>
             <Image
               src="/logo.jpg"
               alt="Vridhhi Associates logo"
@@ -39,14 +56,14 @@ export function Nav() {
 
           <ul className="hidden items-center gap-2 md:flex">
             {nav.map((item) => {
-              const active = pathname === item.href;
+              const on = active === item.href;
               return (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    aria-current={active ? "page" : undefined}
-                    className={`button-sm block rounded-lg px-3 py-2 transition-[background-color,opacity] duration-300 ease-brand hover:bg-white/10 ${
-                      active ? "bg-aqua text-navy-deep hover:bg-aqua" : "text-white"
+                    aria-current={on ? "location" : undefined}
+                    className={`button-sm flex min-h-11 items-center rounded-lg px-3 py-2 transition-[background-color,opacity] duration-300 ease-brand hover:bg-white/10 ${
+                      on ? "bg-aqua text-navy-deep hover:bg-aqua" : "text-white"
                     }`}
                   >
                     {item.label}
@@ -54,29 +71,23 @@ export function Nav() {
                 </li>
               );
             })}
-            <li>
-              <a href={company.tel} className="btn button-sm bg-white text-navy-deep">
-                <Phone size={16} weight="bold" aria-hidden="true" />
-                Call now
-              </a>
-            </li>
           </ul>
 
           <button
             type="button"
-            className="relative size-10 rounded-lg md:hidden"
+            className="relative size-11 rounded-lg md:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}
             onClick={() => setOpen((v) => !v)}
           >
             <span
-              className={`absolute left-2 top-1/2 h-0.5 w-6 bg-white transition-transform duration-500 ease-brand ${
+              className={`absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 bg-white transition-transform duration-500 ease-brand ${
                 open ? "rotate-45" : "-translate-y-1"
               }`}
             />
             <span
-              className={`absolute left-2 top-1/2 h-0.5 w-6 bg-white transition-transform duration-500 ease-brand ${
+              className={`absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 bg-white transition-transform duration-500 ease-brand ${
                 open ? "-rotate-45" : "translate-y-1"
               }`}
             />
@@ -92,34 +103,23 @@ export function Nav() {
         }`}
       >
         {nav.map((item, i) => {
-          const active = pathname === item.href;
+          const on = active === item.href;
           return (
             <Link
               key={item.href}
               href={item.href}
               tabIndex={open ? 0 : -1}
-              aria-current={active ? "page" : undefined}
+              aria-current={on ? "location" : undefined}
               onClick={() => setOpen(false)}
               style={{ transitionDelay: open ? `${Math.min(i * 60, 400)}ms` : "0ms" }}
               className={`heading-3 transition-[opacity,transform] duration-500 ease-brand ${
                 open ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
-              } ${active ? "text-aqua" : "text-white"}`}
+              } ${on ? "text-aqua" : "text-white"}`}
             >
               {item.label}
             </Link>
           );
         })}
-        <a
-          href={company.tel}
-          tabIndex={open ? 0 : -1}
-          style={{ transitionDelay: open ? `${Math.min(nav.length * 60, 400)}ms` : "0ms" }}
-          className={`btn-primary mt-4 self-start transition-[opacity,transform] duration-500 ease-brand ${
-            open ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
-          }`}
-        >
-          <Phone size={20} weight="bold" aria-hidden="true" />
-          {company.phone}
-        </a>
       </div>
     </>
   );

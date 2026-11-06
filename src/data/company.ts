@@ -12,14 +12,15 @@ export const company = {
   website: "https://vridhhiassociates.com",
 };
 
+// Each menu link covers one or more page sections, so the menu can show where you are.
 export const nav = [
-  { href: "/", label: "About us" },
-  { href: "/waterproofing", label: "Waterproofing" },
-  { href: "/methods", label: "Methods" },
+  { href: "/#top", label: "About us", ids: ["top"] },
+  { href: "/#services", label: "Services", ids: ["services", "why", "how"] },
+  { href: "/#products", label: "Products", ids: ["products"] },
+  { href: "/#gallery", label: "Our work", ids: ["promise", "gallery", "faq"] },
 ];
 
 export const facts = [
-  { label: "Established", value: "{{year}}" },
-  { label: "Projects completed", value: "{{number}}" },
-  { label: "Workmanship warranty", value: "{{years}}" },
+  { label: "Established", value: "2022" },
+  { label: "Projects completed", value: "100+" },
 ];
