@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ImageSquare, Phone, ShieldCheck } from "@phosphor-icons/react/dist/ssr";
-import { HeroScene } from "@/components/HeroScene";
+import { ArrowRight, ImageSquare } from "@phosphor-icons/react/dist/ssr";
+import { HeroCompare } from "@/components/HeroCompare";
 import { Reveal } from "@/components/Reveal";
 import { TaglineReveal } from "@/components/TaglineReveal";
 import { Tilt } from "@/components/Tilt";
@@ -19,27 +19,7 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero */}
-      <section className="overflow-hidden bg-navy text-white">
-        <div className="mx-auto grid w-full max-w-6xl items-center gap-12 px-4 pb-16 pt-32 md:grid-cols-2 md:px-6 md:pb-24 md:pt-40">
-          <div className="flex flex-col items-start gap-6">
-            <p className="eyebrow">{company.name}</p>
-            <h1 className="heading-1 hero-heading">
-              Waterproofing that keeps
-              <br className="hidden md:block" /> Hubballi buildings dry.
-            </h1>
-            <p className="body-3 hero-sub text-white/80">{company.description}</p>
-            <a href={company.tel} className="btn-primary">
-              <Phone size={20} weight="bold" aria-hidden="true" />
-              Call {company.phone}
-            </a>
-            <p className="caption-1 flex items-center gap-2 text-white/70">
-              <ShieldCheck size={20} className="text-aqua" aria-hidden="true" />
-              Residential and commercial projects across Hubballi, Karnataka
-            </p>
-          </div>
-          <HeroScene />
-        </div>
-      </section>
+      <HeroCompare />
 
       {/* Tagline reveal */}
       <section className="bg-mist">

@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "project": {
+    "name": "app",
+    "productType": null,
+    "stack": [
+      "nextjs",
+      "react",
+      "tailwind-v4"
+    ]
+  },
+  "sources": {
+    "tokens": [
+      "src/app/globals.css"
+    ],
+    "components": [],
+    "assets": [],
+    "instructions": [
+      "AGENTS.md",
+      "CLAUDE.md"
+    ]
+  },
+  "design": {
+    "colorMode": "light",
+    "colors": {
+      "--color-navy": {
+        "value": "#0f2a52",
+        "source": "src/app/globals.css"
+      },
+      "--color-navy-deep": {
+        "value": "#0b1e3d",
+        "source": "src/app/globals.css"
+      },
+      "--color-navy-mid": {
+        "value": "#17407a",
+        "source": "src/app/globals.css"
+      },
+      "--color-aqua": {
+        "value": "#22c7db",
+        "source": "src/app/globals.css"
+      },
+      "--color-aqua-soft": {
+        "value": "#d9f6fa",
+        "source": "src/app/globals.css"
+      },
+      "--color-mist": {
+        "value": "#f2f9fb",
+        "source": "src/app/globals.css"
+      },
+      "--color-ink": {
+        "value": "#0b1e3d",
+        "source": "src/app/globals.css"
+      }
+    },
+    "typography": {
+      "--font-sans": {
+        "value": "var(--font-manrope)",
+        "source": "src/app/globals.css"
+      }
+    },
+    "spacing": {},
+    "radius": {},
+    "shadows": {},
+    "motion": {
+      "--ease-brand": {
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "source": "src/app/globals.css"
+      }
+    },
+    "density": "unknown"
+  },
+  "components": {
+    "installed": [],
+    "preferredPrimitives": [],
+    "patterns": []
+  },
+  "constraints": {
+    "must": [],
+    "avoid": []
+  },
+  "decisions": [
+    {
+      "decision": "About page hero uses the before and after compare slider (Direction C), replacing the 3D tower. Drawn walls are placeholders for real before and after photos.",
+      "source": "src/components/HeroCompare.tsx",
+      "date": "2026-11-06"
+    }
+  ],
+  "evidence": [
+    {
+      "fact": "design.colorMode:light",
+      "source": "src/app/globals.css"
+    },
+    {
+      "fact": "design.tokens",
+      "source": "src/app/globals.css"
+    },
+    {
+      "fact": "project.instructions",
+      "source": "AGENTS.md"
+    },
+    {
+      "fact": "project.instructions",
+      "source": "CLAUDE.md"
+    },
+    {
+      "fact": "project.stack:nextjs",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:react",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:tailwind-v4",
+      "source": "package.json"
+    }
+  ],
+  "generatedAt": "2026-11-06T08:30:35.134Z"
+}
