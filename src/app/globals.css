@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-navy: #0f2a52;
+  --color-navy-deep: #0b1e3d;
+  --color-navy-mid: #17407a;
+  --color-aqua: #22c7db;
+  --color-aqua-soft: #d9f6fa;
+  --color-mist: #f2f9fb;
+  --color-ink: #0b1e3d;
+  --font-sans: var(--font-manrope);
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-mist);
+  color: var(--color-ink);
+  font-family: var(--font-manrope), sans-serif;
+  overflow-x: hidden;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-aqua);
+  outline-offset: 2px;
+}
+
+/* ---------- Text styles (landing-page-design B1) ---------- */
+@utility heading-1 { @apply text-4xl font-semibold md:text-6xl; text-wrap: balance; }
+@utility heading-2 { @apply text-3xl font-semibold md:text-5xl; text-wrap: balance; }
+@utility heading-3 { @apply text-2xl font-semibold md:text-4xl; text-wrap: balance; }
+@utility heading-4 { @apply text-2xl font-semibold md:text-3xl; text-wrap: balance; }
+@utility heading-5 { @apply text-xl font-semibold md:text-2xl; text-wrap: balance; }
+@utility heading-6 { @apply text-xl font-semibold; text-wrap: balance; }
+@utility title-1 { @apply text-xl font-medium; }
+@utility title-2 { @apply text-lg font-medium; }
+@utility title-3 { @apply text-base font-medium; }
+@utility title-4 { @apply text-sm font-medium; }
+@utility body-1 { @apply text-base font-semibold; text-wrap: pretty; }
+@utility body-2 { @apply text-base font-medium; text-wrap: pretty; }
+@utility body-3 { @apply text-base font-normal; text-wrap: pretty; }
+@utility body-4 { @apply text-sm font-semibold; text-wrap: pretty; }
+@utility body-5 { @apply text-sm font-medium; text-wrap: pretty; }
+@utility body-6 { @apply text-sm font-normal; text-wrap: pretty; }
+@utility button-md { @apply text-base font-semibold; }
+@utility button-sm { @apply text-sm font-semibold; }
+@utility caption-1 { @apply text-sm font-medium; }
+@utility caption-3 { @apply text-xs font-semibold; }
+@utility caption-4 { @apply text-xs font-medium; }
+
+  /* Buttons: 8px vertical, 12px horizontal */
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 transition-[transform,opacity] duration-300 ease-brand;
+  &:hover { transform: translateY(-2px); }
+  &:active { transform: scale(0.98); }
+}
+@utility btn-primary {
+  @apply btn button-md bg-aqua text-navy-deep;
+  &:hover { opacity: 0.9; }
+}
+@utility btn-ghost { @apply btn button-md border border-navy/30 text-navy; }
+@utility btn-ghost-light { @apply btn button-md border border-white/40 text-white; }
+@utility section { @apply mx-auto w-full max-w-6xl px-4 py-16 md:px-6 md:py-24; }
+@utility eyebrow { @apply caption-3 uppercase tracking-widest text-aqua; }
+@utility card { @apply rounded-2xl border border-navy/10 bg-white p-6; }
+@utility card-dark { @apply rounded-2xl border border-white/15 bg-navy-mid p-6 text-white; }
+@utility hero-heading {
+    max-width: 680px;
+    background: linear-gradient(to right, #ffffff, #9b9b9b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+@utility hero-sub { max-width: 680px; }
+
+/* ---------- Scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 700ms var(--ease-brand),
+    transform 700ms var(--ease-brand);
+}
+.reveal[data-in] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Tagline word reveal ---------- */
+.word {
+  opacity: 0.3;
+  transition: opacity 500ms var(--ease-brand);
+}
+.word[data-on] {
+  opacity: 1;
+}
+
+/* ---------- Page transition ---------- */
+.page-in {
+  animation: page-in 700ms var(--ease-brand) 200ms both;
+}
+.wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  transform: translateX(101%);
+  animation: wipe 1000ms var(--ease-brand) both;
+}
+.wipe-aqua {
+  background: var(--color-aqua);
+  z-index: 71;
+}
+.wipe-navy {
+  background: var(--color-navy);
+  animation-delay: 120ms;
+}
+@keyframes wipe {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(101%); }
+}
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- 3D scenes ---------- */
+.scene { perspective: 1200px; }
+.stage {
+  transform-style: preserve-3d;
+  transition: transform 500ms var(--ease-brand);
+}
+.preserve { transform-style: preserve-3d; }
+.face { position: absolute; backface-visibility: hidden; }
+
+.tower-spin { animation: tower-spin 28s linear infinite; }
+@keyframes tower-spin {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
+}
+
+.can-spin { animation: tower-spin 14s linear infinite; }
+
+.rain { animation: rain 2200ms var(--ease-brand) infinite; opacity: 0; }
+@keyframes rain {
+  0% { transform: translateY(-200px); opacity: 0; }
+  15% { opacity: 1; }
+  85% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(0); opacity: 0; }
+}
+
+.ripple { animation: ripple 3000ms var(--ease-brand) infinite; opacity: 0; }
+@keyframes ripple {
+  0% { transform: scale(0.3); opacity: 0.9; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.bob { animation: bob 6000ms var(--ease-brand) infinite alternate; }
+@keyframes bob {
+  from { transform: translateY(0); }
+  to { transform: translateY(-16px); }
+}
+
+.layer-float { animation: layer-float 5000ms var(--ease-brand) infinite alternate; }
+@keyframes layer-float {
+  from { transform: translateZ(0); }
+  to { transform: translateZ(var(--lift, 40px)); }
+}
+
+.drift { animation: drift 9000ms var(--ease-brand) infinite alternate; }
+@keyframes drift {
+  from { transform: translateY(0); }
+  to { transform: translateY(-24px); }
+}
+
+.tilt {
+  transition: transform 500ms var(--ease-brand);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal, .reveal[data-in] { transform: none; transition: opacity 300ms linear; }
+  .word { opacity: 1; transition: none; }
+  .page-in { animation: fade-in 300ms linear both; }
+  .wipe { animation: fade-out 300ms linear both; transform: none; }
+  .tower-spin, .can-spin, .rain, .ripple, .bob, .layer-float, .drift { animation: none; }
+  .rain { opacity: 1; }
+  .ripple { opacity: 0.4; }
+  .tilt, .stage { transition: none; }
+}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fade-out { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
